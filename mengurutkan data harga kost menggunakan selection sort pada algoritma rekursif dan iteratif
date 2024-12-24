@@ -1,0 +1,136 @@
+import time
+import matplotlib.pyplot as plt
+from prettytable import PrettyTable
+
+# Data harga kost
+kost_data = [
+    {"nama": "kost darma putri 2", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 500000},
+    {"nama": "kos 81", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 500000},
+    {"nama": "Wisma Al-muhayat", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 600000},
+    {"nama": "Kost bunda sri", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 565000},
+    {"nama": "Kost Putra J. O", "jenis": "LAKI-LAKI", "sistem": "PERTAHUN", "pertahun": 8500000, "perbulan": 700000},
+    {"nama": "Kost Putra Mandiri", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 600000},
+    {"nama": "-", "jenis": "CAMPUR", "sistem": "PERBULAN", "pertahun": 7800000, "perbulan": 650000},
+    {"nama": "Kost Bintang", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 550000},
+    {"nama": "NNN Kos Putra", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": 5500000, "perbulan": 570000},
+    {"nama": "Azalia House", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 1250000},
+    {"nama": "KOS AISA", "jenis": "CAMPUR", "sistem": "PERBULAN", "pertahun": 8400000, "perbulan": 700000},
+    {"nama": "Graha Melati 3", "jenis": "PEREMPUAN", "sistem": "PERTAHUN", "pertahun": 7200000, "perbulan": None},
+    {"nama": "Diamond Kost", "jenis": "LAKI-LAKI", "sistem": "PERTAHUN", "pertahun": 6500000, "perbulan": None}
+]
+
+
+# Data harga kost
+kost_data = [
+    {"nama": "kost darma putri 2", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 500000},
+    {"nama": "kos 81", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 500000},
+    {"nama": "Wisma Al-muhayat", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 600000},
+    {"nama": "Kost bunda sri", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 565000},
+    {"nama": "Kost Putra J. O", "jenis": "LAKI-LAKI", "sistem": "PERTAHUN", "pertahun": 8500000, "perbulan": 700000},
+    {"nama": "Kost Putra Mandiri", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 600000},
+    {"nama": "-", "jenis": "CAMPUR", "sistem": "PERBULAN", "pertahun": 7800000, "perbulan": 650000},
+    {"nama": "Kost Bintang", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": None, "perbulan": 550000},
+    {"nama": "NNN Kos Putra", "jenis": "LAKI-LAKI", "sistem": "PERBULAN", "pertahun": 5500000, "perbulan": 570000},
+    {"nama": "Azalia House", "jenis": "PEREMPUAN", "sistem": "PERBULAN", "pertahun": None, "perbulan": 1250000},
+    {"nama": "KOS AISA", "jenis": "CAMPUR", "sistem": "PERBULAN", "pertahun": 8400000, "perbulan": 700000},
+    {"nama": "Graha Melati 3", "jenis": "PEREMPUAN", "sistem": "PERTAHUN", "pertahun": 7200000, "perbulan": None},
+    {"nama": "Diamond Kost", "jenis": "LAKI-LAKI", "sistem": "PERTAHUN", "pertahun": 6500000, "perbulan": None}
+]
+
+# Fungsi rekursif untuk mencari data kost
+def find_kost_recursive(index, data):
+    if index == 0:
+        return data[index]
+    return find_kost_recursive(index - 1, data)
+
+# Fungsi iteratif untuk mencari data kost
+def find_kost_iterative(index, data):
+    return data[index]
+
+# Grafik untuk menyimpan data
+indices = []
+recursive_times = []
+iterative_times = []
+
+# Fungsi untuk mencetak tabel waktu eksekusi
+def print_execution_table():
+    table = PrettyTable()
+    table.field_names = ["Input (n)", "Recursive Time (s)", "Iterative Time (s)"]
+    for i in range(len(indices)):
+        table.add_row([indices[i], recursive_times[i], iterative_times[i]])
+    print(table)
+
+# Fungsi untuk memperbarui grafik
+def update_graph():
+    plt.figure(figsize=(8, 6))
+    plt.plot(indices, recursive_times, label='Recursive', marker='o', linestyle='-')
+    plt.plot(indices, iterative_times, label='Iterative', marker='o', linestyle='-')
+    plt.title('Performance Comparison: Recursive vs Iterative')
+    plt.xlabel('Input Value (n)')
+    plt.ylabel('Execution Time (seconds)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# Fungsi untuk menampilkan kost berdasarkan harga terendah dan tertinggi
+def display_sorted_kost():
+    sorted_kost = sorted(kost_data, key=lambda x: x['perbulan'] if x['perbulan'] is not None else float('inf'))
+    table = PrettyTable()
+    table.field_names = ["Nama", "Jenis", "Sistem", "Per Tahun", "Per Bulan"]
+    for kost in sorted_kost:
+        table.add_row([
+            kost['nama'],
+            kost['jenis'],
+            kost['sistem'],
+            f"{kost['pertahun']:,}" if kost['pertahun'] else '-',
+            f"{kost['perbulan']:,}" if kost['perbulan'] else '-'
+        ])
+    print(table)
+
+# Program utama
+while True:
+    try:
+        print("\nMenu:")
+        print("1. Tampilkan urutan kost berdasarkan harga per bulan (terendah ke tertinggi)")
+        print("2. Masukkan angka untuk mencari kost berdasarkan indeks")
+        print("3. Keluar")
+        choice = int(input("Pilih menu: "))
+
+        if choice == 1:
+            display_sorted_kost()
+        elif choice == 2:
+            n = int(input("Masukkan nilai n atau ketik -1 untuk keluar: "))
+            if n == -1:
+                print("Program selesai. Terima kasih!")
+                break
+
+            indices.append(n)
+
+            # Ukur waktu eksekusi algoritma rekursif
+            start_time = time.time()
+            kost_recursive = find_kost_recursive(min(n, len(kost_data) - 1), kost_data)
+            recursive_times.append(time.time() - start_time)
+
+            # Ukur waktu eksekusi algoritma iteratif
+            start_time = time.time()
+            kost_iterative = find_kost_iterative(min(n, len(kost_data) - 1), kost_data)
+            iterative_times.append(time.time() - start_time)
+
+            # Tampilkan hasil pencarian
+            print("\nData Kost Ditemukan:")
+            print(kost_iterative)
+
+            # Cetak tabel waktu eksekusi
+            print_execution_table()
+
+            # Perbarui grafik
+            update_graph()
+
+        elif choice == 3:
+            print("Program selesai. Terima kasih!")
+            break
+        else:
+            print("Pilihan tidak valid. Masukkan angka 1-3.")
+
+    except ValueError:
+        print("Masukkan angka yang valid!")
